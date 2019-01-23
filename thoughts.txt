@@ -1,0 +1,7 @@
+ID
+User
+Topic
+Description
+Active
+Duration
+Achieved
