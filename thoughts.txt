@@ -5,3 +5,9 @@ Description
 Active
 Duration
 Achieved
+
+-> wenn active gesetzt -> beginning auf timestamp
+
+use App\Goal erklären
+
+Tooltip for active/public

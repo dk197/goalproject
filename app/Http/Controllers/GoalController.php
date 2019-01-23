@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Goal;
+
 class GoalController extends Controller
 {
     /**
@@ -13,7 +15,8 @@ class GoalController extends Controller
      */
     public function index()
     {
-        //
+        $goals = Goal::all();
+        return view('goals.index', compact('goals'));
     }
 
     /**
@@ -23,7 +26,7 @@ class GoalController extends Controller
      */
     public function create()
     {
-        //
+        dd('test');
     }
 
     /**
