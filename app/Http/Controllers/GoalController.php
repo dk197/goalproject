@@ -8,6 +8,11 @@ use App\Goal;
 
 class GoalController extends Controller
 {
+
+    public function __construct(){
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -26,7 +31,7 @@ class GoalController extends Controller
      */
     public function create()
     {
-        dd('test');
+
     }
 
     /**
@@ -37,7 +42,19 @@ class GoalController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $attributes = request()->validate([
+            'title' => ['required', 'min:3'], 
+            'description' => ['required', 'min:3'], 
+            'active', 
+            'public' 
+        ]);
+
+        $attributes['user_id'] = auth()->id();
+
+        $data = Goal::create($attributes);
+
+        return response()->json(['message' => 'success', 'attributes' => $attributes, 'inserted_id' => $data->id]);
+        // return redirect('/goals');
     }
 
     /**
@@ -46,9 +63,9 @@ class GoalController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Goal $goal)
     {
-        //
+        return view('goals.show', compact('goal'));
     }
 
     /**

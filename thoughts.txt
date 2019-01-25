@@ -11,3 +11,5 @@ Achieved
 use App\Goal erklären
 
 Tooltip for active/public
+
+protected fillable in goal.php
