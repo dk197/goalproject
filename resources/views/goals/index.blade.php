@@ -29,12 +29,12 @@
 	  </div>
 
 	  <div class="form-check">
-	    <input type="checkbox" name="active" class="form-check-input checkbox" id="goal_active">
+	    <input type="checkbox" value="0" name="active" class="form-check-input checkbox" id="goal_active">
 	    <label class="form-check-label" for="goal_active">Start from now</label>
 	  </div>
 
 	  <div class="form-check">
-	    <input type="checkbox" name="public" class="form-check-input checkbox" id="goal_public">
+	    <input type="checkbox" value="0" name="public" class="form-check-input checkbox" id="goal_public">
 	    <label class="form-check-label" for="goal_public">Set Goal as public</label>
 	  </div>
 

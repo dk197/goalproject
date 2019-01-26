@@ -18,8 +18,8 @@ class CreateGoalsTable extends Migration
             $table->unsignedInteger('user_id');
             $table->string('title');
             $table->string('description');
-            // $table->date('beginning')->default(DB::raw('CURRENT_TIMESTAMP'));;
-            // $table->date('ending');
+            $table->timestamp('beginning')->nullable();
+            $table->date('ending')->nullable();
             $table->boolean('active')->default(true);
             $table->boolean('public')->default(false);
             $table->boolean('achieved')->default(false);

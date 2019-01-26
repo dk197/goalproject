@@ -25,9 +25,9 @@ $(document).ready(function(){
 
 	$('.checkbox').on('change', function(){
 		if(this.checked){
-			this.value = 1;
+			this.value = true;
 		}else{
-			this.value = 0;
+			this.value = false;
 		}
 	});
 
@@ -40,7 +40,7 @@ $(document).ready(function(){
 		if(!goalList.has('li').length == 0){
 			$('.goal_item:last-child').append(newGoal);
 		}else{
-			alert('test2');
+			$('#goal_list').prepend(newGoal);
 		}
 	}
 
