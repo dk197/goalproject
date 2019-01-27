@@ -25,12 +25,11 @@ $(document).ready(function(){
 
 	$('.checkbox').on('change', function(){
 		if(this.checked){
-			this.value = true;
+			this.value = 1;
 		}else{
-			this.value = false;
+			this.value = 0;
 		}
 	});
-
 
 
 	function addGoal(data, lastInsertedId){
@@ -44,10 +43,22 @@ $(document).ready(function(){
 		}
 	}
 
+	function getCheckboxValue(){
+
+		var values = '';
+		$('.checkbox').each(function(){
+			if(!$(this).is(':checked')){
+				values = values + '&' + $(this).attr('name') + '=' + $(this).val();
+			}
+		});
+		return values;
+	}
+
 	var myForm = $('#create_goal_form');
 
 	myForm.on('submit', function(e){
-		var data = myForm.serialize();
+		var data = myForm.serialize() + getCheckboxValue();
+		console.log(data);
 		e.preventDefault();
 		$.ajax({
 			url: '/goals',
@@ -56,11 +67,11 @@ $(document).ready(function(){
 			data: data,
 			success: function(response){
 				if(response.message == 'success'){
-					addGoal(response.attributes, response.inserted_id)
+					console.log(response);
+					addGoal(response.attributes, response.inserted_id);
 				}else{
 					alert('An Error occured, please try again!');
 				}
-
 			}
 		});
 	});

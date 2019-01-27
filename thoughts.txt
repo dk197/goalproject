@@ -15,3 +15,9 @@ Tooltip for active/public
 protected fillable in goal.php
 
 aktiv setzen -> Zeit seit aktiv setzen
+
+getCheckboxValue ötig, da serialize() nur aktive checkboxen speichert
+
+app.php app debug auf false setzen
+ 'env' => env('APP_ENV', 'local'),
+'debug' => env('APP_DEBUG', false

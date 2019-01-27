@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+
+use DateTime;
+
 use Illuminate\Http\Request;
 
 use App\Goal;
@@ -11,6 +15,7 @@ class GoalController extends Controller
 
     public function __construct(){
         $this->middleware('auth');
+        // ->only([index', ...])
     }
 
     /**
@@ -20,7 +25,7 @@ class GoalController extends Controller
      */
     public function index()
     {
-        $goals = Goal::all();
+        $goals = Goal::where('user_id', auth()->id())->get();
         return view('goals.index', compact('goals'));
     }
 
@@ -44,16 +49,26 @@ class GoalController extends Controller
     {
         $attributes = request()->validate([
             'title' => ['required', 'min:3'], 
-            'description' => ['required', 'min:3'], 
-            'active', 
-            'public' 
+            'description' => ['required', 'min:3']
         ]);
 
         $attributes['user_id'] = auth()->id();
 
+        $attributes['active'] = $request->active;
+        $attributes['public'] = $request->public;
+
+        if($attributes['active'] == '1'){
+           $attributes['beginning'] = Carbon::now()->toDateTimeString();
+        }
+        // else{
+        //     $attributes['beginning'] = 'notsetyet';
+        // }
+
+        // $attributes['ending'] = 'notsetyet';
+
         $data = Goal::create($attributes);
 
-        return response()->json(['message' => 'success', 'attributes' => $attributes, 'inserted_id' => $data->id]);
+        return response()->json(['message' => 'success', 'attributes' => $attributes, 'inserted_id' => $data->id, 'active' =>  $request->active]);
         // return redirect('/goals');
     }
 
@@ -65,7 +80,21 @@ class GoalController extends Controller
      */
     public function show(Goal $goal)
     {
-        return view('goals.show', compact('goal'));
+        $now = Carbon::now();
+        $beginning = Carbon::parse($goal->beginning);
+
+        $diff = date_diff($beginning,$now);
+        $test = $diff->format("%y");
+        $testarray = [
+            'beginning_date' => substr($beginning, 10),
+            'beginning_time' => substr($beginning, 12),
+            'years' => $diff->format("%y"),
+            'months' => $diff->format("%m"),
+            'days' => $diff->format("%d"),
+            'rest' => $diff->format("%h:%i:%s")
+        ];
+
+        return view('goals.show', compact('goal'), compact('testarray'));
     }
 
     /**
@@ -74,9 +103,9 @@ class GoalController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Goal $goal)
     {
-        //
+        return view('goals.edit', compact('goal'));
     }
 
     /**
@@ -86,9 +115,20 @@ class GoalController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Goal $goal)
     {
-        //
+        if(request('public') == ''){
+            $goal->public = '0';
+        }else{
+            $goal->public = request('public');
+        }
+
+        $goal->title = request('title');
+        $goal->description = request('description');
+        
+        $goal->save();
+
+        return redirect('/goals');
     }
 
     /**
@@ -97,8 +137,10 @@ class GoalController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Goal $goal)
     {
-        //
+        $goal->delete();
+
+        return redirect('/goals');
     }
 }

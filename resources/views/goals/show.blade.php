@@ -9,7 +9,13 @@
 	<div class="radio">
 	  	<label><input type="radio" name="goal_active" {{ $goal->active == 1 ? 'checked' : '' }}> Active Goal</label>
 	</div>
-	<p>{{ $goal->created_at }}</p>
+	<p>Ziel erstellt am {{ $testarray['beginning_date'] }} um {{ $testarray['beginning_time'] }}</p>
+	<p>{{ $testarray['years'] }}</p>
+	<p>{{ $testarray['months'] }}</p>
+	<p>{{ $testarray['days'] }}</p>
+	<p>{{ $testarray['rest'] }}</p>
+
+	<a href="/goals/{{ $goal->id }}/edit">Edit</a>
 </div>
 
 @endsection
