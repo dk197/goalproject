@@ -81,20 +81,21 @@ class GoalController extends Controller
     public function show(Goal $goal)
     {
         $now = Carbon::now();
+        $created_at = $goal->created_at;
         $beginning = Carbon::parse($goal->beginning);
 
         $diff = date_diff($beginning,$now);
         $test = $diff->format("%y");
-        $testarray = [
-            'beginning_date' => substr($beginning, 10),
-            'beginning_time' => substr($beginning, 12),
-            'years' => $diff->format("%y"),
-            'months' => $diff->format("%m"),
-            'days' => $diff->format("%d"),
-            'rest' => $diff->format("%h:%i:%s")
+        $data = [
+            'created_date' => substr($created_at, 0, 10),
+            'created_time' => substr($created_at, 11),
+            'diff_years' => $diff->format("%y"),
+            'diff_months' => $diff->format("%m"),
+            'diff_days' => $diff->format("%d"),
+            'diff_rest' => $diff->format("%h:%i:%s")
         ];
 
-        return view('goals.show', compact('goal'), compact('testarray'));
+        return view('goals.show', compact('goal'), compact('data'));
     }
 
     /**
@@ -142,5 +143,20 @@ class GoalController extends Controller
         $goal->delete();
 
         return redirect('/goals');
+    }
+
+    public function start(Goal $goal){
+
+        return response()->json(['message' => 'success', 'goal' => $goal->title]);
+    }
+
+    public function restart(Goal $goal){
+
+        $goal->active = 0;
+        $goal->beginning = null;
+
+        $goal->save();
+
+        return response()->json(['message' => 'success', 'goal' => $goal->title]);
     }
 }

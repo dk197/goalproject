@@ -54,10 +54,10 @@ $(document).ready(function(){
 		return values;
 	}
 
-	var myForm = $('#create_goal_form');
+	var create_goal_form = $('#create_goal_form');
 
-	myForm.on('submit', function(e){
-		var data = myForm.serialize() + getCheckboxValue();
+	create_goal_form.on('submit', function(e){
+		var data = create_goal_form.serialize() + getCheckboxValue();
 		console.log(data);
 		e.preventDefault();
 		$.ajax({
@@ -71,6 +71,44 @@ $(document).ready(function(){
 					addGoal(response.attributes, response.inserted_id);
 				}else{
 					alert('An Error occured, please try again!');
+				}
+			}
+		});
+	});
+
+
+	var start_goal_form = $('#start_goal_form');
+
+	start_goal_form.on('submit', function(e){
+		var goal_id = $('#goal_id').val();
+		var url = '/goals/' + goal_id + '/start';
+		e.preventDefault();
+
+		$.ajax({
+			url: url,
+			data: start_goal_form.serialize(),
+			method: 'POST',
+			success: function(response){
+				console.log(response);
+				$('#goal_active').prop('checked', true);
+			}
+		});
+	});
+
+	var restart_goal_form = $('#restart_goal_form');
+		
+	restart_goal_form.on('submit', function(e){
+		var goal_id = $('#goal_id').val();
+		var url = '/goals/' + goal_id + '/restart';
+		e.preventDefault();
+
+		$.ajax({
+			url: url,
+			data: restart_goal_form.serialize(),
+			method: 'POST',
+			success: function(response){
+				if(response.message =='success'){
+					alert('working');
 				}
 			}
 		});
