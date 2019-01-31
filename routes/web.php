@@ -19,7 +19,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::post('/goals/{goal}/restart', 'GoalController@restart');
+Route::post('/goals/{goal}/stop', 'GoalController@stop');
 
 Route::post('/goals/{goal}/start', 'GoalController@start');
 

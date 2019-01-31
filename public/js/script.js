@@ -31,16 +31,35 @@ $(document).ready(function(){
 		}
 	});
 
+	$('#create_goal').on('click', function(){
+		if($('#hidden_goal_form').attr('hidden')){
+			$('#hidden_goal_form').attr('hidden', false);
+		}else{
+			$('#hidden_goal_form').attr('hidden', true);
+		}
+	})
+
 
 	function addGoal(data, lastInsertedId){
-
-		var goalList = $('#goal_list');
-		var newGoal = '<li class="goal_item"><a href="goals/' + lastInsertedId + '">' + data.title + '</a></li>';
-		if(!goalList.has('li').length == 0){
-			$('.goal_item:last-child').append(newGoal);
+		
+		if(data['active'] == '1'){
+			var goalList = $('#goal_list_active');
+			var newGoal = '<li class="goal_item"><a href="goals/' + lastInsertedId + '">' + data.title + '</a></li>';
+			if(!goalList.has('li').length == 0){
+				$(goalList).find($('.goal_item:last-child')).after(newGoal);
+			}else{
+				$('#goal_list_active').prepend(newGoal);
+			}
 		}else{
-			$('#goal_list').prepend(newGoal);
+			var goalList = $('#goal_list_inactive');
+			var newGoal = '<li class="goal_item"><a href="goals/' + lastInsertedId + '">' + data.title + '</a></li>';
+			if(!goalList.has('li').length == 0){
+				$(goalList).find($('.goal_item:last-child')).after(newGoal);
+			}else{
+				$('#goal_list_inactive').prepend(newGoal);
+			}
 		}
+		
 	}
 
 	function getCheckboxValue(){
@@ -89,26 +108,29 @@ $(document).ready(function(){
 			data: start_goal_form.serialize(),
 			method: 'POST',
 			success: function(response){
-				console.log(response);
-				$('#goal_active').prop('checked', true);
+				if(response.message =='success'){
+					$('#goal_active').prop('checked', true);
+					window.location.reload();
+				}
 			}
 		});
 	});
 
-	var restart_goal_form = $('#restart_goal_form');
+	var stop_goal_form = $('#stop_goal_form');
 		
-	restart_goal_form.on('submit', function(e){
+	stop_goal_form.on('submit', function(e){
 		var goal_id = $('#goal_id').val();
-		var url = '/goals/' + goal_id + '/restart';
+		var url = '/goals/' + goal_id + '/stop';
 		e.preventDefault();
 
 		$.ajax({
 			url: url,
-			data: restart_goal_form.serialize(),
+			data: stop_goal_form.serialize(),
 			method: 'POST',
 			success: function(response){
 				if(response.message =='success'){
-					alert('working');
+					$('#goal_active').prop('checked', false);
+					window.location.reload();
 				}
 			}
 		});

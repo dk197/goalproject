@@ -25,8 +25,17 @@ class GoalController extends Controller
      */
     public function index()
     {
-        $goals = Goal::where('user_id', auth()->id())->get();
-        return view('goals.index', compact('goals'));
+        $match_active = ['user_id' => auth()->id(), 'active' => '1'];
+        $match_inactive = ['user_id' => auth()->id(), 'active' => '0'];
+
+        $goals_active = Goal::where($match_active)->get();
+        $goals_inactive = Goal::where($match_inactive)->get();
+        // $goals_array = [
+        //     'active' => $goals_active->toArray(),
+        //     'inactive' => $goals_inactive->toArray()
+        //  ];
+         // dd($goals_active);
+        return view('goals.index', compact('goals_inactive'), compact('goals_active'));
     }
 
     /**
@@ -85,14 +94,16 @@ class GoalController extends Controller
         $beginning = Carbon::parse($goal->beginning);
 
         $diff = date_diff($beginning,$now);
-        $test = $diff->format("%y");
+
+        $hours = str_pad($diff->format("%h"), 2, "0", STR_PAD_LEFT);
+        $minutes = str_pad($diff->format("%i"), 2, "0", STR_PAD_LEFT);
+        $seconds = str_pad($diff->format("%s"), 2, "0", STR_PAD_LEFT);
+
         $data = [
             'created_date' => substr($created_at, 0, 10),
             'created_time' => substr($created_at, 11),
-            'diff_years' => $diff->format("%y"),
-            'diff_months' => $diff->format("%m"),
             'diff_days' => $diff->format("%d"),
-            'diff_rest' => $diff->format("%h:%i:%s")
+            'diff_time' => $hours. ':' . $minutes . ':' . $seconds
         ];
 
         return view('goals.show', compact('goal'), compact('data'));
@@ -147,10 +158,15 @@ class GoalController extends Controller
 
     public function start(Goal $goal){
 
+        $goal->active = 1;
+        $goal->beginning = Carbon::now();;
+
+        $goal->save();
+
         return response()->json(['message' => 'success', 'goal' => $goal->title]);
     }
 
-    public function restart(Goal $goal){
+    public function stop(Goal $goal){
 
         $goal->active = 0;
         $goal->beginning = null;

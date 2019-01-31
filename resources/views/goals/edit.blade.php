@@ -22,13 +22,13 @@
 	    <label class="form-check-label" for="goal_public">Public Goal</label>
 	  </div>
 
-	  <button type="submit" class="btn btn-primary margin_top">Update</button>
+	  <button type="submit" class="goal_btn margin_top">Update</button>
 	</form>
 
 	<form method="POST" action="/goals/{{ $goal->id }}">
 		@csrf
 		@method('DELETE')
-		<button type="submit" class="btn btn-primary margin_top">Delete Goal</button>
+		<button type="submit" class="goal_btn margin_top">Delete Goal</button>
 	</form>
 
 	@include('errors')

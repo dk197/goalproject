@@ -3,44 +3,53 @@
 @section('content')
 
 <div class="container">
-	<h1>{{ $goal->title }}</h1>
-	<p>{{ $goal->description }}</p>
+	<div class="row">
+		<div class="col-md-4 border-right border-secondary">
+			<h1>{{ $goal->title }}</h1>
+			<p>Goal created on {{ $data['created_date'] }} at {{ $data['created_time'] }}</p>
+			<p class="goal_font">{{ $goal->description }}</p>
+			<button class="goal_btn" onclick="window.location='/goals/{{ $goal->id }}/edit';">Edit</button>
+		</div>
 
-	<div class="form-check">
-	    <input type="checkbox" disabled {{ $goal->active == 1 ? 'checked' : '' }} class="form-check-input disabled" id="goal_active">
-	    <label class="form-check-label"  for="goal_active">Active Goal</label>
-	</div>
-	
-	<p>Goal created at {{ $data['created_date'] }} at {{ $data['created_time'] }}</p>
+		<div class="col-md-4 border-right border-secondary d-flex justify-content-center align-items-center" id="goal_timer">
+				@if($data['diff_days'] == 0)
 
-	<div id="goal_timer">
+					<h1 class="text-center">{{ $data['diff_time'] }}</h1>
+
+				@else
+
+					<h1 class="text-center">{{ $data['diff_days'] }} Day{{ $data['diff_days'] > 1 ? 's' : ''}}<br>{{ $data['diff_time'] }}h</h1>
+					
+				@endif
+		</div>
 		
+		<div class="col-md-4">
+
+			<div id="start_or_stop_goal">
+
+				@if($goal->active == 1)
+
+					<form id="stop_goal_form" method="POST" action="/goals/{{ $goal->id }}/stop">
+						@csrf
+						<input type="text" hidden id="goal_id" value="{{ $goal->id }}" name="goal_id">
+						<button class="goal_btn" type="submit">Stop Goal</button>
+					</form>
+
+				@else
+
+					<form id="start_goal_form" method="POST" action="/goals/{{ $goal->id }}/start">
+						@csrf
+						<input type="text" hidden id="goal_id" value="{{ $goal->id }}" name="goal_id">
+						<button class="btn btn-danger" type="submit">Start now</button>
+					</form>
+
+				@endif
+
+			</div>
+
+		</div>
+
 	</div>
-
-	<p>{{ $data['diff_years'] }}</p>
-	<p>{{ $data['diff_months'] }}</p>
-	<p>{{ $data['diff_days'] }}</p>
-	<p>{{ $data['diff_rest'] }}</p>
-
-	@if($goal->active == 1)
-
-		<form id="restart_goal_form" method="POST" action="/goals/{{ $goal->id }}/restart">
-			@csrf
-			<input type="text" hidden id="goal_id" value="{{ $goal->id }}" name="goal_id">
-			<button class="btn btn-danger" type="submit">Restart</button>
-		</form>
-
-	@else
-
-		<form id="start_goal_form" method="POST" action="/goals/{{ $goal->id }}/start">
-			@csrf
-			<input type="text" hidden id="goal_id" value="{{ $goal->id }}" name="goal_id">
-			<button class="btn btn-danger" type="submit">Start now</button>
-		</form>
-
-	@endif
-
-	<a href="/goals/{{ $goal->id }}/edit">Edit</a>
 </div>
 
 @endsection

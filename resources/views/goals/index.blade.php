@@ -2,19 +2,46 @@
 
 @section('content')
 <div class="container">
-	<h1>My Goals</h1>
-	<ul id="goal_list">
-		@foreach ($goals as $goal)
-			<li class="goal_item">
-				<a href="goals/{{ $goal->id }}">{{ $goal->title }}</a>
-			</li>
-		@endforeach
-	</ul>
+	<div class="row goal_list">
+		<h1 class="col-12">My Goals</h1>
 
-	<button class="btn btn-primary margin_bot" id="create_goal">Create new Goal</button>
+		<div class="col-md-6 border-right border-secondary">
+			<h3 class="border-bottom border-secondary" id="active_goals">Active</h3>
+				<!-- @foreach($goals_active as $goal)
+				<div class="test">
+					<a href="goals/{{ $goal['id'] }}" class="goal_item">
+						{{ $goal['title'] }}
+					</a>
+				</div>
+				@endforeach -->
+				<ul id="goal_list_active">
+					@foreach($goals_active as $goal)
+						<li class="goal_item">
+							<a href="goals/{{ $goal['id'] }}">{{ $goal['title'] }}</a>
+						</li>
+					@endforeach
+				</ul>
+		</div>
+
+		<div class="col-md-6">
+			<h3 class="border-bottom border-secondary" id="inactive_goals">Inactive</h3>
+				<ul id="goal_list_inactive">
+					@foreach($goals_inactive as $goal)
+						<li class="goal_item">
+							<a href="goals/{{ $goal['id'] }}">{{ $goal['title'] }}</a>
+						</li>
+					@endforeach
+				</ul>
+		</div>
+	</div>
+
+	<div class="text-center">
+		<button class="goal_btn margin_top margin_bot" id="create_goal">Create new Goal</
+		</button>
+	</div>
 </div>
 
-<div class="container" id="hidden_goal_form">
+<div class="container" hidden id="hidden_goal_form">
 
 	<form id="create_goal_form" method="POST" action="/goals">
 		@csrf
@@ -38,7 +65,7 @@
 	    <label class="form-check-label" for="goal_public">Set Goal as public</label>
 	  </div>
 
-	  <button type="submit" class="btn btn-primary margin_top">Create</button>
+	  <button type="submit" class="goal_btn margin_top">Create</button>
 	</form>
 
 	@include('errors')
