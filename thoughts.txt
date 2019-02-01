@@ -21,3 +21,7 @@ getCheckboxValue ötig, da serialize() nur aktive checkboxen speichert
 app.php app debug auf false setzen
  'env' => env('APP_ENV', 'local'),
 'debug' => env('APP_DEBUG', false
+
+
+page mit public/private 
+

@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="container">
+<div class="container" id="show_goal">
 	<div class="row">
 		<div class="col-md-4 border-right border-secondary">
 			<h1>{{ $goal->title }}</h1>
@@ -11,14 +11,14 @@
 			<button class="goal_btn" onclick="window.location='/goals/{{ $goal->id }}/edit';">Edit</button>
 		</div>
 
-		<div class="col-md-4 border-right border-secondary d-flex justify-content-center align-items-center" id="goal_timer">
+		<div class="col-md-4 border-right border-secondary d-flex justify-content-center align-items-center">
 				@if($data['diff_days'] == 0)
 
-					<h1 class="text-center">{{ $data['diff_time'] }}</h1>
+					<h1 class="text-center" id="goal_timer">{{ $data['diff_time'] }}h</h1>
 
 				@else
 
-					<h1 class="text-center">{{ $data['diff_days'] }} Day{{ $data['diff_days'] > 1 ? 's' : ''}}<br>{{ $data['diff_time'] }}h</h1>
+					<h1 class="text-center" id="goal_timer">{{ $data['diff_days'] }} Day{{ $data['diff_days'] > 1 ? 's' : ''}}<br>{{ $data['diff_time'] }}h</h1>
 					
 				@endif
 		</div>

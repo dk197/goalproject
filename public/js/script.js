@@ -23,6 +23,40 @@
 
 $(document).ready(function(){
 
+	if($('div').is('#show_goal')){
+		var timeText = $('#goal_timer').html();
+
+		if(timeText.includes('Day')){
+			// setInterval(function() {
+				timer();
+			// },1000);
+		}else{
+			var time = timeText.substring(0, 8);
+			console.log(time);
+		}
+
+		function timer(){
+			var timeText = $('#goal_timer').html();
+			var myHours = timeText.substring(9, 11);
+			var myMinutes = timeText.substring(12, 14);
+			var mySeconds = timeText.substring(15, 17);
+
+			var myDate = new Date('2019-01-01T' + myHours + ':' + myMinutes + ':' + mySeconds);
+			console.log(myDate);
+			var test = new Date (myDate.getTime() + 1000);
+			console.log(test);
+			var newHours = test.getHours();
+			var newMinutes = test.getMinutes();
+			var newSeconds = test.getSeconds();
+			var newTime = newHours + ':' + newMinutes + ':' + newSeconds;
+			console.log(newTime);
+			$('#goal_timer').html('<h1 class="text-center" id="goal_timer">1 Day<br>' + newTime + 'h</h1>');
+	}
+
+	}
+
+	
+
 	$('.checkbox').on('change', function(){
 		if(this.checked){
 			this.value = 1;
