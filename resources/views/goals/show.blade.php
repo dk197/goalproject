@@ -4,14 +4,17 @@
 
 <div class="container" id="show_goal">
 	<div class="row">
-		<div class="col-md-4 border-right border-secondary">
+		<div class="{{ Auth::user()->id == $goal->user_id ? 'col-md-4' : 'col-md-6' }} border-right border-secondary">
 			<h1>{{ $goal->title }}</h1>
 			<p>Goal created on {{ $data['created_date'] }} at {{ $data['created_time'] }}</p>
 			<p class="goal_font">{{ $goal->description }}</p>
+
+			@if(Auth::user()->id == $goal->user_id)
 			<button class="goal_btn" onclick="window.location='/goals/{{ $goal->id }}/edit';">Edit</button>
+			@endif
 		</div>
 
-		<div class="col-md-4 border-right border-secondary d-flex justify-content-center align-items-center">
+		<div class="{{ Auth::user()->id == $goal->user_id ? 'col-md-4 border-right border-secondary' : 'col-md-6' }} d-flex justify-content-center align-items-center">
 				@if($data['diff_days'] == 0)
 
 					<h1 class="text-center" id="goal_timer">{{ $data['diff_time'] }}h</h1>
@@ -23,6 +26,7 @@
 				@endif
 		</div>
 		
+		@if(Auth::user()->id == $goal->user_id)
 		<div class="col-md-4">
 
 			<div id="start_or_stop_goal">
@@ -48,6 +52,7 @@
 			</div>
 
 		</div>
+		@endif
 
 	</div>
 </div>

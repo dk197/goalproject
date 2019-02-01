@@ -19,6 +19,8 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('/public', 'GoalController@publicGoals');
+
 Route::post('/goals/{goal}/stop', 'GoalController@stop');
 
 Route::post('/goals/{goal}/start', 'GoalController@start');

@@ -14,7 +14,7 @@ class GoalController extends Controller
 {
 
     public function __construct(){
-        $this->middleware('auth');
+        $this->middleware('auth', ['only' => ['show', 'store', 'edit', 'update', 'destroy', 'start', 'stop']]);
         // ->only([index', ...])
     }
 
@@ -69,16 +69,14 @@ class GoalController extends Controller
         if($attributes['active'] == '1'){
            $attributes['beginning'] = Carbon::now()->toDateTimeString();
         }
-        // else{
-        //     $attributes['beginning'] = 'notsetyet';
-        // }
 
-        // $attributes['ending'] = 'notsetyet';
+        if(!$request->goal_ending == ''){
+            $attributes['ending'] = $request->goal_ending;
+        }
 
         $data = Goal::create($attributes);
 
         return response()->json(['message' => 'success', 'attributes' => $attributes, 'inserted_id' => $data->id, 'active' =>  $request->active]);
-        // return redirect('/goals');
     }
 
     /**
@@ -174,5 +172,16 @@ class GoalController extends Controller
         $goal->save();
 
         return response()->json(['message' => 'success', 'goal' => $goal->title]);
+    }
+
+    public function publicGoals(Goal $Goal){
+
+        $match_active = ['public' => '1', 'active' => '1'];
+        $match_inactive = ['public' => '1', 'active' => '0'];
+
+        $goals_active = Goal::where($match_active)->get();
+        $goals_inactive = Goal::where($match_inactive)->get();
+
+        return view('goals.publicgoals', compact('goals_inactive'), compact('goals_active'));
     }
 }

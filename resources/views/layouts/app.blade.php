@@ -41,7 +41,10 @@
                             <a class="nav-link" href="{{ url('/') }}">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/goals') }}">Goals</a>
+                            <a class="nav-link" href="{{ url('/public') }}">Public Goals</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('/goals') }}">My Goals</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('/statistics') }}">Statistics</a>

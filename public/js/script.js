@@ -114,7 +114,6 @@ $(document).ready(function(){
 				$('#goal_list_inactive').prepend(newGoal);
 			}
 		}
-		
 	}
 
 	function getCheckboxValue(){
@@ -141,8 +140,10 @@ $(document).ready(function(){
 			data: data,
 			success: function(response){
 				if(response.message == 'success'){
-					console.log(response);
 					addGoal(response.attributes, response.inserted_id);
+					document.getElementById("create_goal_form").reset();
+					$("html, body").animate({ scrollTop: 0 }, "slow");
+					$('#hidden_goal_form').attr('hidden', true);
 				}else{
 					alert('An Error occured, please try again!');
 				}
