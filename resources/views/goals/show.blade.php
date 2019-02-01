@@ -40,7 +40,7 @@
 					<form id="start_goal_form" method="POST" action="/goals/{{ $goal->id }}/start">
 						@csrf
 						<input type="text" hidden id="goal_id" value="{{ $goal->id }}" name="goal_id">
-						<button class="btn btn-danger" type="submit">Start now</button>
+						<button class="goal_btn" type="submit">Start now</button>
 					</form>
 
 				@endif
