@@ -28,3 +28,9 @@ page mit public/private
 VALIDATION (Required)
 
 POLICIES (authserviceprovider, goalpolicy)
+
+timer bei nicht eigenen goals
+
+login und register -> Button Klasse
+
+responsive

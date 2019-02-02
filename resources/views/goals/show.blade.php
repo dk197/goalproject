@@ -27,7 +27,7 @@
 		</div>
 		
 		@if(Auth::user()->id == $goal->user_id)
-		<div class="col-md-4">
+		<div class="col-md-4 d-flex justify-content-center align-items-center">
 
 			<div id="start_or_stop_goal">
 
@@ -52,6 +52,8 @@
 			</div>
 
 		</div>
+		@else
+			<div id="stop_goal_form"></div>
 		@endif
 
 	</div>

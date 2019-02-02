@@ -66,6 +66,7 @@ $(document).ready(function(){
 			var newTime = newHours + ':' + newMinutes + ':' + newSeconds;
 			return newTime;
 		}
+		
 		function addZero(input){
 			if(input < 10){
 				input = '0' + input;

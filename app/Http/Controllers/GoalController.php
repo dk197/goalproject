@@ -77,6 +77,10 @@ class GoalController extends Controller
      */
     public function show(Goal $goal)
     {
+        if($goal-> public == '0' && auth()->id() != $goal->user_id){
+            abort(403);
+        }
+
         $now = Carbon::now();
         $created_at = $goal->created_at;
         $beginning = Carbon::parse($goal->beginning);

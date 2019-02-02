@@ -59,6 +59,33 @@ body{
 }
 
 .goal_font{
-	font-size: 1.6rem;
+	font-size: 1.4rem;
+}
+#login_text a, #welcome a{
+	color: white;
+	font-weight: bold;
 }
 
+.navbar{
+	font-size: 20px;
+	padding-bottom: 0px;
+	padding-top: 0px;
+}
+.navbar-brand{
+	font-size: 30px;
+	padding-bottom: 0px;
+	padding-top: 0px;
+}
+.navbar-dark .navbar-nav .nav-link:focus, .navbar-dark .navbar-nav .nav-link:hover{
+	color: white;
+}
+
+/*Card for login/registration*/
+.card{
+	background-color: #2d2d2d !important;
+	color: white;
+	border: 1px solid hsla(0,0%,100%,.5);
+}
+.card-header{
+	border-bottom: 1px solid hsla(0,0%,100%,.5);
+}

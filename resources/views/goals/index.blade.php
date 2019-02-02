@@ -5,7 +5,7 @@
 
 	@if (!isset(Auth::user()->id))
 		<div class="row justify-content-center">
-			<h1>Login to create your own Goals</h1>
+			<h1 id="login_text"><a href="/login">Login</a> or <a href="/register">Register</a> to create your own Goals</h1>
 		</div>
 	@else
 

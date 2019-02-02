@@ -46,9 +46,6 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('/goals') }}">My Goals</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/statistics') }}">Statistics</a>
-                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
