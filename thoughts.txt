@@ -26,3 +26,5 @@ app.php app debug auf false setzen
 page mit public/private 
 
 VALIDATION (Required)
+
+POLICIES (authserviceprovider, goalpolicy)
