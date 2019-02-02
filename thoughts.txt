@@ -34,3 +34,5 @@ timer bei nicht eigenen goals
 login und register -> Button Klasse
 
 responsive
+
+ending nur in zukunft setzen

@@ -30,24 +30,17 @@
 		<div class="col-md-4 d-flex justify-content-center align-items-center">
 
 			<div id="start_or_stop_goal">
+				<form id="start_or_stop_goal_form">
+					@csrf
+					<input type="text" hidden id="goal_id" value="{{ $goal->id }}" name="goal_id">
 
-				@if($goal->active == 1)
+					@if($goal->active == 1)
+						<button class="goal_btn" id="start_or_stop_goal_btn" type="submit">Stop Goal</button>
+					@else
+						<button class="goal_btn" id="start_or_stop_goal_btn" type="submit">Start Goal</button>
+					@endif
 
-					<form id="stop_goal_form" method="POST" action="/goals/{{ $goal->id }}/stop">
-						@csrf
-						<input type="text" hidden id="goal_id" value="{{ $goal->id }}" name="goal_id">
-						<button class="goal_btn" type="submit">Stop Goal</button>
-					</form>
-
-				@else
-
-					<form id="start_goal_form" method="POST" action="/goals/{{ $goal->id }}/start">
-						@csrf
-						<input type="text" hidden id="goal_id" value="{{ $goal->id }}" name="goal_id">
-						<button class="goal_btn" type="submit">Start now</button>
-					</form>
-
-				@endif
+				</form>
 
 			</div>
 

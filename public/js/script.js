@@ -23,59 +23,58 @@
 
 $(document).ready(function(){
 
-	if($('div').is('#show_goal') && document.getElementById('stop_goal_form')){
-		var timeText = $('#goal_timer').html();
+	if($('div').is('#show_goal') && $('#start_or_stop_goal_btn').html() == 'Stop Goal'){
+		// timer('start');
+		var testest = setInterval(timer, 1000);
+	}
 
-		if(timeText.includes('Days')){
-			setInterval(function(){
+	function timer(){
+
+			var timeText = $('#goal_timer').html();
+
+			if(timeText.includes('Days')){
 				var timeText = $('#goal_timer').html();
 				var myDays = timeText.substr(0, timeText.indexOf('Day')); 
 				var myHours = timeText.substring(10, 12);
 				var myMinutes = timeText.substring(13, 15);
 				var mySeconds = timeText.substring(16, 18);
-				var myTime = timer(myHours, myMinutes, mySeconds);
+				var myTime = getNewTime(myHours, myMinutes, mySeconds);
 				$('#goal_timer').html(myDays + 'Days' + '<br>' + myTime + 'h');
-			}, 1000);
-		}else if(timeText.includes('Day')){
-			setInterval(function(){
+			}else if(timeText.includes('Day')){
 				var timeText = $('#goal_timer').html();
 				var myDays = timeText.substr(0, timeText.indexOf('Day')); 
 				var myHours = timeText.substring(9, 11);
 				var myMinutes = timeText.substring(12, 14);
 				var mySeconds = timeText.substring(15, 17);
-				var myTime = timer(myHours, myMinutes, mySeconds);
+				var myTime = getNewTime(myHours, myMinutes, mySeconds);
 				$('#goal_timer').html(myDays + 'Day' + '<br>' + myTime + 'h');
-			}, 1000);
-		}else{
-			setInterval(function(){
+			}else{
 				var timeText = $('#goal_timer').html();
 				var myHours = timeText.substring(0, 2); 
 				var myMinutes = timeText.substring(3, 5);
 				var mySeconds = timeText.substring(6, 8);
-				var myTime = timer(myHours, myMinutes, mySeconds);
+				var myTime = getNewTime(myHours, myMinutes, mySeconds);
 				$('#goal_timer').html(myTime + 'h');
-			}, 1000);
-		}
-
-		function timer(hours, minutes, seconds){
-			var myDate = new Date('2019-01-01T' + hours + ':' + minutes + ':' + seconds);
-			var newDate = new Date (myDate.getTime() + 1000);
-			var newHours = addZero(newDate.getHours());
-			var newMinutes = addZero(newDate.getMinutes());
-			var newSeconds = addZero(newDate.getSeconds());
-			var newTime = newHours + ':' + newMinutes + ':' + newSeconds;
-			return newTime;
-		}
-		
-		function addZero(input){
-			if(input < 10){
-				input = '0' + input;
 			}
-			return input;
-		}
+		
 	}
 
-	
+	function getNewTime(hours, minutes, seconds){
+		var myDate = new Date('2019-01-01T' + hours + ':' + minutes + ':' + seconds);
+		var newDate = new Date (myDate.getTime() + 1000);
+		var newHours = addZero(newDate.getHours());
+		var newMinutes = addZero(newDate.getMinutes());
+		var newSeconds = addZero(newDate.getSeconds());
+		var newTime = newHours + ':' + newMinutes + ':' + newSeconds;
+		return newTime;
+	}
+
+	function addZero(input){
+		if(input < 10){
+			input = '0' + input;
+		}
+		return input;
+	}
 
 	
 
@@ -152,44 +151,86 @@ $(document).ready(function(){
 		});
 	});
 
+	var start_or_stop_goal_form = $('#start_or_stop_goal_form');
 
-	var start_goal_form = $('#start_goal_form');
-
-	start_goal_form.on('submit', function(e){
+	$(document.body).on('submit', start_or_stop_goal_form, function(e){
 		var goal_id = $('#goal_id').val();
-		var url = '/goals/' + goal_id + '/start';
-		e.preventDefault();
+		console.log($('#start_or_stop_goal_btn').html());
+
+		if($('#start_or_stop_goal_btn').html() == 'Start Goal'){
+			var url = '/goals/' + goal_id + '/start';
+		}else{
+			var url = '/goals/' + goal_id + '/stop';
+		}
+
+		e.preventDefault()
 
 		$.ajax({
 			url: url,
-			data: start_goal_form.serialize(),
+			data: start_or_stop_goal_form.serialize(),
 			method: 'POST',
 			success: function(response){
 				if(response.message =='success'){
-					$('#goal_active').prop('checked', true);
+					// window.location.reload();
+					// $('#start_goal_form').html('');
+					
 					window.location.reload();
+					
+					// console.log(response);
+					// if(url =='/goals/' + goal_id + '/start'){
+					// 	console.log(url);
+					// 	$('#start_or_stop_goal_btn').html('Stop Goal');
+					// 	// clearInterval(testest);
+					// 	// var testest = setInterval(timer, 1000);
+					// }else{
+					// 	console.log('test');
+					// 	$('#start_or_stop_goal_btn').html('Start Goal');
+					// 	clearInterval(testest);
+					// }
 				}
 			}
 		});
 	});
 
-	var stop_goal_form = $('#stop_goal_form');
+
+	// var start_goal_form = $('#start_goal_form');
+
+	// start_goal_form.on('submit', function(e){
+	// 	var goal_id = $('#goal_id').val();
+	// 	var url = '/goals/' + goal_id + '/start';
+	// 	e.preventDefault();
+
+	// 	$.ajax({
+	// 		url: url,
+	// 		data: start_goal_form.serialize(),
+	// 		method: 'POST',
+	// 		success: function(response){
+	// 			if(response.message =='success'){
+	// 				// window.location.reload();
+	// 				// $('#start_goal_form').html('');
+	// 				timer('start');
+	// 			}
+	// 		}
+	// 	});
+	// });
+
+	// var stop_goal_form = $('#stop_goal_form');
 		
-	stop_goal_form.on('submit', function(e){
-		var goal_id = $('#goal_id').val();
-		var url = '/goals/' + goal_id + '/stop';
-		e.preventDefault();
+	// stop_goal_form.on('submit', function(e){
+	// 	var goal_id = $('#goal_id').val();
+	// 	var url = '/goals/' + goal_id + '/stop';
+	// 	e.preventDefault();
 
-		$.ajax({
-			url: url,
-			data: stop_goal_form.serialize(),
-			method: 'POST',
-			success: function(response){
-				if(response.message =='success'){
-					$('#goal_active').prop('checked', false);
-					window.location.reload();
-				}
-			}
-		});
-	});
+	// 	$.ajax({
+	// 		url: url,
+	// 		data: stop_goal_form.serialize(),
+	// 		method: 'POST',
+	// 		success: function(response){
+	// 			if(response.message =='success'){
+	// 				// window.location.reload();
+	// 				timer('stop');
+	// 			}
+	// 		}
+	// 	});
+	// });
 })
