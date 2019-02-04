@@ -14,7 +14,7 @@ class GoalController extends Controller
 {
 
     public function __construct(){
-        $this->middleware('auth', ['only' => ['show', 'store', 'edit', 'update', 'destroy', 'start', 'stop']]);
+        $this->middleware('auth', ['only' => ['show', 'store', 'edit', 'update', 'destroy', 'start', 'stop', 'complete']]);
         // ->only([index', ...])
     }
 
@@ -28,8 +28,8 @@ class GoalController extends Controller
         $match_active = ['user_id' => auth()->id(), 'active' => '1'];
         $match_inactive = ['user_id' => auth()->id(), 'active' => '0'];
 
-        $goals_active = Goal::where($match_active)->get();
-        $goals_inactive = Goal::where($match_inactive)->get();
+        $goals_active = Goal::where($match_active)->latest('created_at')->get();
+        $goals_inactive = Goal::where($match_inactive)->latest('created_at')->get();
         // $goals_array = [
         //     'active' => $goals_active->toArray(),
         //     'inactive' => $goals_inactive->toArray()
@@ -170,13 +170,27 @@ class GoalController extends Controller
         return response()->json(['message' => 'success', 'goal' => $goal->title]);
     }
 
+    public function complete(Goal $goal){
+
+        if(request()->status == 'completed'){
+            $goal->achieved = '0';
+            $goal->save();
+        }else{
+            $goal->achieved = '1';
+            $goal->save();
+        }
+
+
+        return response()->json(['message' => 'success', 'request' => request()->all()]);
+    }
+
     public function publicGoals(Goal $Goal){
 
         $match_active = ['public' => '1', 'active' => '1'];
         $match_inactive = ['public' => '1', 'active' => '0'];
 
-        $goals_active = Goal::where($match_active)->get();
-        $goals_inactive = Goal::where($match_inactive)->get();
+        $goals_active = Goal::where($match_active)->latest('created_at')->get();
+        $goals_inactive = Goal::where($match_inactive)->latest('created_at')->get();
 
         return view('goals.publicgoals', compact('goals_inactive'), compact('goals_active'));
     }

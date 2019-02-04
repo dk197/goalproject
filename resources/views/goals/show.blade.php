@@ -11,7 +11,16 @@
 
 			@if(Auth::user()->id == $goal->user_id)
 			<button class="goal_btn" onclick="window.location='/goals/{{ $goal->id }}/edit';">Edit</button>
+
+			<form id="goal_complete_form">
+				@csrf
+				<input type="text" id="status" hidden name="status" value="{{ $goal->achieved == 0 ? 'uncompleted' : 'completed' }}">
+				<button class="goal_btn margin_top" id="goal_complete_btn" type="submit">
+					{{ $goal->achieved == '0' ? 'Mark as completed' : 'Mark as uncompleted' }}
+				</button>
+			</form>
 			@endif
+
 		</div>
 
 		<div class="{{ Auth::user()->id == $goal->user_id ? 'col-md-4 border-right border-secondary' : 'col-md-6' }} d-flex justify-content-center align-items-center">

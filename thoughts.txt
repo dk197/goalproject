@@ -36,3 +36,5 @@ login und register -> Button Klasse
 responsive
 
 ending nur in zukunft setzen
+
+AJAX von start/stop (document.onsubmit auf startgoalform)

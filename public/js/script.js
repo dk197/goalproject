@@ -153,9 +153,8 @@ $(document).ready(function(){
 
 	var start_or_stop_goal_form = $('#start_or_stop_goal_form');
 
-	$(document.body).on('submit', start_or_stop_goal_form, function(e){
+	start_or_stop_goal_form.on('submit', function(e){
 		var goal_id = $('#goal_id').val();
-		console.log($('#start_or_stop_goal_btn').html());
 
 		if($('#start_or_stop_goal_btn').html() == 'Start Goal'){
 			var url = '/goals/' + goal_id + '/start';
@@ -175,7 +174,7 @@ $(document).ready(function(){
 					// $('#start_goal_form').html('');
 					
 					window.location.reload();
-					
+
 					// console.log(response);
 					// if(url =='/goals/' + goal_id + '/start'){
 					// 	console.log(url);
@@ -192,45 +191,62 @@ $(document).ready(function(){
 		});
 	});
 
+	// var goal_complete_form = $('#goal_complete_form');
 
-	// var start_goal_form = $('#start_goal_form');
-
-	// start_goal_form.on('submit', function(e){
+	// goal_complete_form.on('submit', function(e){
 	// 	var goal_id = $('#goal_id').val();
-	// 	var url = '/goals/' + goal_id + '/start';
 	// 	e.preventDefault();
 
 	// 	$.ajax({
-	// 		url: url,
-	// 		data: start_goal_form.serialize(),
+	// 		url: '/goals/' + goal_id + '/complete',
+	// 		data: goal_complete_form.serialize(),
 	// 		method: 'POST',
 	// 		success: function(response){
-	// 			if(response.message =='success'){
-	// 				// window.location.reload();
-	// 				// $('#start_goal_form').html('');
-	// 				timer('start');
+	// 			if(response.message == 'success'){
+	// 				alert('Congratulations!');
 	// 			}
 	// 		}
 	// 	});
 	// });
 
-	// var stop_goal_form = $('#stop_goal_form');
-		
-	// stop_goal_form.on('submit', function(e){
-	// 	var goal_id = $('#goal_id').val();
-	// 	var url = '/goals/' + goal_id + '/stop';
-	// 	e.preventDefault();
 
-	// 	$.ajax({
-	// 		url: url,
-	// 		data: stop_goal_form.serialize(),
-	// 		method: 'POST',
-	// 		success: function(response){
-	// 			if(response.message =='success'){
-	// 				// window.location.reload();
-	// 				timer('stop');
-	// 			}
-	// 		}
-	// 	});
-	// });
+	$(document).on('click', '#goal_complete_btn', function(e){
+		var goal_complete_form = $('#goal_complete_form');
+		var goal_id = $('#goal_id').val();
+
+		e.preventDefault();
+
+		if($(this).html() == 'Mark as completed'){
+			console.log($(this).html());
+			$.ajax({
+				url: '/goals/' + goal_id + '/complete',
+				data: goal_complete_form.serialize(),
+				method: 'POST',
+				success: function(response){
+					if(response.message == 'success'){
+						console.log(response.request);
+						alert('Congratulations!');
+						$('#goal_complete_btn').html('Mark as uncompleted');
+						$('#status').val('completed');
+					}
+				}
+			});
+		}else{
+			console.log($(this).html());
+			$.ajax({
+				url: '/goals/' + goal_id + '/complete',
+				data: goal_complete_form.serialize(),
+				method: 'POST',
+				success: function(response){
+					if(response.message == 'success'){
+						console.log(response.request);
+						alert('Just DO it!');
+						// $(this).html('Mark as completed');
+						$('#goal_complete_btn').html('Mark as completed');
+						$('#status').val('uncompleted');
+					}
+				}
+			});
+		}
+	});
 })

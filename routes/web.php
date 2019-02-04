@@ -25,4 +25,6 @@ Route::post('/goals/{goal}/stop', 'GoalController@stop');
 
 Route::post('/goals/{goal}/start', 'GoalController@start');
 
+Route::post('/goals/{goal}/complete', 'GoalController@complete');
+
 Route::resource('goals', 'GoalController');
