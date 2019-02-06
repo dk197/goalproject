@@ -38,3 +38,5 @@ responsive
 ending nur in zukunft setzen
 
 AJAX von start/stop (document.onsubmit auf startgoalform)
+
+Ending im create refactor

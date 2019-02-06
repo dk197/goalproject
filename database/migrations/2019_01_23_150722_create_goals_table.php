@@ -19,10 +19,10 @@ class CreateGoalsTable extends Migration
             $table->string('title');
             $table->string('description');
             $table->timestamp('beginning')->nullable();
-            $table->date('ending')->nullable();
+            $table->timestamp('ending')->nullable();
             $table->boolean('active')->default(true);
             $table->boolean('public')->default(false);
-            $table->boolean('achieved')->default(false);
+            $table->boolean('completed')->default(false);
             $table->timestamps();
         });
     }

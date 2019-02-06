@@ -81,22 +81,43 @@ class GoalController extends Controller
             abort(403);
         }
 
-        $now = Carbon::now();
-        $created_at = $goal->created_at;
         $beginning = Carbon::parse($goal->beginning);
 
-        $diff = date_diff($beginning,$now);
+        if($goal->completed == 0){
+            $now = Carbon::now();
+            $created_at = $goal->created_at;
+            $beginning = Carbon::parse($goal->beginning);
 
-        $hours = str_pad($diff->format("%h"), 2, "0", STR_PAD_LEFT);
-        $minutes = str_pad($diff->format("%i"), 2, "0", STR_PAD_LEFT);
-        $seconds = str_pad($diff->format("%s"), 2, "0", STR_PAD_LEFT);
+            $diff = date_diff($beginning,$now);
 
-        $data = [
-            'created_date' => substr($created_at, 0, 10),
-            'created_time' => substr($created_at, 11),
-            'diff_days' => $diff->format("%d"),
-            'diff_time' => $hours. ':' . $minutes . ':' . $seconds
-        ];
+            $hours = str_pad($diff->format("%h"), 2, "0", STR_PAD_LEFT);
+            $minutes = str_pad($diff->format("%i"), 2, "0", STR_PAD_LEFT);
+            $seconds = str_pad($diff->format("%s"), 2, "0", STR_PAD_LEFT);
+
+            $data = [
+                'created_date' => substr($created_at, 0, 10),
+                'created_time' => substr($created_at, 11),
+                'diff_days' => $diff->format("%d"),
+                'diff_time' => $hours. ':' . $minutes . ':' . $seconds
+            ];
+        }else{
+            $ending = Carbon::parse($goal->ending);
+            $created_at = $goal->created_at;
+            $beginning = Carbon::parse($goal->beginning);
+
+            $diff = date_diff($beginning,$ending);
+
+            $hours = str_pad($diff->format("%h"), 2, "0", STR_PAD_LEFT);
+            $minutes = str_pad($diff->format("%i"), 2, "0", STR_PAD_LEFT);
+            $seconds = str_pad($diff->format("%s"), 2, "0", STR_PAD_LEFT);
+
+            $data = [
+                'created_date' => substr($created_at, 0, 10),
+                'created_time' => substr($created_at, 11),
+                'diff_days' => $diff->format("%d"),
+                'diff_time' => $hours. ':' . $minutes . ':' . $seconds
+            ];
+        }
 
         return view('goals.show', compact('goal'), compact('data'));
     }
@@ -173,10 +194,12 @@ class GoalController extends Controller
     public function complete(Goal $goal){
 
         if(request()->status == 'completed'){
-            $goal->achieved = '0';
+            $goal->completed = '0';
+            $goal->ending = null;
             $goal->save();
         }else{
-            $goal->achieved = '1';
+            $goal->completed = '1';
+            $goal->ending = Carbon::now();
             $goal->save();
         }
 

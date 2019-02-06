@@ -23,40 +23,42 @@
 
 $(document).ready(function(){
 
-	if($('div').is('#show_goal') && $('#start_or_stop_goal_btn').html() == 'Stop Goal'){
-		// timer('start');
-		var testest = setInterval(timer, 1000);
+	var interval = null;
+
+	if($('div').is('#show_goal') && $('#start_or_stop_goal_btn').html() == 'Stop Goal' && $('#goal_complete_btn').html() == 'Mark as completed'){
+		startTimer();
+		//NEEDED: if completed -> dont start timer
+		
 	}
 
 	function timer(){
 
-			var timeText = $('#goal_timer').html();
+		var timeText = $('#goal_timer').html();
 
-			if(timeText.includes('Days')){
-				var timeText = $('#goal_timer').html();
-				var myDays = timeText.substr(0, timeText.indexOf('Day')); 
-				var myHours = timeText.substring(10, 12);
-				var myMinutes = timeText.substring(13, 15);
-				var mySeconds = timeText.substring(16, 18);
-				var myTime = getNewTime(myHours, myMinutes, mySeconds);
-				$('#goal_timer').html(myDays + 'Days' + '<br>' + myTime + 'h');
-			}else if(timeText.includes('Day')){
-				var timeText = $('#goal_timer').html();
-				var myDays = timeText.substr(0, timeText.indexOf('Day')); 
-				var myHours = timeText.substring(9, 11);
-				var myMinutes = timeText.substring(12, 14);
-				var mySeconds = timeText.substring(15, 17);
-				var myTime = getNewTime(myHours, myMinutes, mySeconds);
-				$('#goal_timer').html(myDays + 'Day' + '<br>' + myTime + 'h');
-			}else{
-				var timeText = $('#goal_timer').html();
-				var myHours = timeText.substring(0, 2); 
-				var myMinutes = timeText.substring(3, 5);
-				var mySeconds = timeText.substring(6, 8);
-				var myTime = getNewTime(myHours, myMinutes, mySeconds);
-				$('#goal_timer').html(myTime + 'h');
-			}
-		
+		if(timeText.includes('Days')){
+			var timeText = $('#goal_timer').html();
+			var myDays = timeText.substr(0, timeText.indexOf('Day')); 
+			var myHours = timeText.substring(10, 12);
+			var myMinutes = timeText.substring(13, 15);
+			var mySeconds = timeText.substring(16, 18);
+			var myTime = getNewTime(myHours, myMinutes, mySeconds);
+			$('#goal_timer').html(myDays + 'Days' + '<br>' + myTime + 'h');
+		}else if(timeText.includes('Day')){
+			var timeText = $('#goal_timer').html();
+			var myDays = timeText.substr(0, timeText.indexOf('Day')); 
+			var myHours = timeText.substring(9, 11);
+			var myMinutes = timeText.substring(12, 14);
+			var mySeconds = timeText.substring(15, 17);
+			var myTime = getNewTime(myHours, myMinutes, mySeconds);
+			$('#goal_timer').html(myDays + 'Day' + '<br>' + myTime + 'h');
+		}else{
+			var timeText = $('#goal_timer').html();
+			var myHours = timeText.substring(0, 2); 
+			var myMinutes = timeText.substring(3, 5);
+			var mySeconds = timeText.substring(6, 8);
+			var myTime = getNewTime(myHours, myMinutes, mySeconds);
+			$('#goal_timer').html(myTime + 'h');
+		}
 	}
 
 	function getNewTime(hours, minutes, seconds){
@@ -74,6 +76,14 @@ $(document).ready(function(){
 			input = '0' + input;
 		}
 		return input;
+	}
+
+	function startTimer(){
+		interval = setInterval(timer, 1000);
+	}
+
+	function stopTimer(){
+		clearInterval(interval);
 	}
 
 	
@@ -170,45 +180,20 @@ $(document).ready(function(){
 			method: 'POST',
 			success: function(response){
 				if(response.message =='success'){
-					// window.location.reload();
-					// $('#start_goal_form').html('');
-					
-					window.location.reload();
-
-					// console.log(response);
-					// if(url =='/goals/' + goal_id + '/start'){
-					// 	console.log(url);
-					// 	$('#start_or_stop_goal_btn').html('Stop Goal');
-					// 	// clearInterval(testest);
-					// 	// var testest = setInterval(timer, 1000);
-					// }else{
-					// 	console.log('test');
-					// 	$('#start_or_stop_goal_btn').html('Start Goal');
-					// 	clearInterval(testest);
-					// }
+					if(url =='/goals/' + goal_id + '/start'){
+						$('#start_or_stop_goal_btn').html('Stop Goal');
+						startTimer();
+					}else{
+						$('#start_or_stop_goal_btn').html('Start Goal');
+						$('#goal_timer').html('00:00:00h');
+						stopTimer();
+					}
+				}else{
+					alert('An error occured, please try again');
 				}
 			}
 		});
 	});
-
-	// var goal_complete_form = $('#goal_complete_form');
-
-	// goal_complete_form.on('submit', function(e){
-	// 	var goal_id = $('#goal_id').val();
-	// 	e.preventDefault();
-
-	// 	$.ajax({
-	// 		url: '/goals/' + goal_id + '/complete',
-	// 		data: goal_complete_form.serialize(),
-	// 		method: 'POST',
-	// 		success: function(response){
-	// 			if(response.message == 'success'){
-	// 				alert('Congratulations!');
-	// 			}
-	// 		}
-	// 	});
-	// });
-
 
 	$(document).on('click', '#goal_complete_btn', function(e){
 		var goal_complete_form = $('#goal_complete_form');
@@ -227,6 +212,8 @@ $(document).ready(function(){
 						console.log(response.request);
 						alert('Congratulations!');
 						$('#goal_complete_btn').html('Mark as uncompleted');
+						//timer stopped
+						stopTimer();
 						$('#status').val('completed');
 					}
 				}
@@ -241,8 +228,8 @@ $(document).ready(function(){
 					if(response.message == 'success'){
 						console.log(response.request);
 						alert('Just DO it!');
-						// $(this).html('Mark as completed');
 						$('#goal_complete_btn').html('Mark as completed');
+						//Timer stopped
 						$('#status').val('uncompleted');
 					}
 				}

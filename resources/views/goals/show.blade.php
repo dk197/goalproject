@@ -14,10 +14,8 @@
 
 			<form id="goal_complete_form">
 				@csrf
-				<input type="text" id="status" hidden name="status" value="{{ $goal->achieved == 0 ? 'uncompleted' : 'completed' }}">
-				<button class="goal_btn margin_top" id="goal_complete_btn" type="submit">
-					{{ $goal->achieved == '0' ? 'Mark as completed' : 'Mark as uncompleted' }}
-				</button>
+				<input type="text" id="status" hidden name="status" value="{{ $goal->completed == 0 ? 'uncompleted' : 'completed' }}">
+				<button class="goal_btn margin_top" id="goal_complete_btn" type="submit">{{ $goal->completed == '0' ? 'Mark as completed' : 'Mark as uncompleted' }}</button>
 			</form>
 			@endif
 
