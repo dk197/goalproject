@@ -40,3 +40,5 @@ ending nur in zukunft setzen
 AJAX von start/stop (document.onsubmit auf startgoalform)
 
 Ending im create refactor
+
+Validation goal complete: kein complete, wenn nicht active (js bereits vorhanden, controller nicht)

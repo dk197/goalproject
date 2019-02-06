@@ -37,13 +37,13 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
+                        <li class="nav-item" id="home_nav">
                             <a class="nav-link" href="{{ url('/') }}">Home</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" id="public_nav">
                             <a class="nav-link" href="{{ url('/public') }}">Public Goals</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" id="goals_nav">
                             <a class="nav-link" href="{{ url('/goals') }}">My Goals</a>
                         </li>
                     </ul>

@@ -23,6 +23,17 @@
 
 $(document).ready(function(){
 
+	var myUrl = window.location.pathname;
+    console.log(myUrl);
+    	
+   if(myUrl.includes('public')){
+    	$('#public_nav').addClass('active');
+    }else if(myUrl.includes('goals')){
+    	$('#goals_nav').addClass('active');
+    }else{
+    	$('#home_nav').addClass('active');
+    }
+
 	var interval = null;
 
 	if($('div').is('#show_goal') && $('#start_or_stop_goal_btn').html() == 'Stop Goal' && $('#goal_complete_btn').html() == 'Mark as completed'){
@@ -202,47 +213,54 @@ $(document).ready(function(){
 	});
 
 	$(document).on('click', '#goal_complete_btn', function(e){
-		var goal_complete_form = $('#goal_complete_form');
-		var goal_id = $('#goal_id').val();
 
 		e.preventDefault();
 
-		if($(this).html() == 'Mark as completed'){
-			console.log($(this).html());
-			$.ajax({
-				url: '/goals/' + goal_id + '/complete',
-				data: goal_complete_form.serialize(),
-				method: 'POST',
-				success: function(response){
-					if(response.message == 'success'){
-						console.log(response.request);
-						alert('Congratulations!');
-						$('#goal_complete_btn').html('Mark as uncompleted');
-						$('#start_or_stop_goal_btn').html('Start Goal');
-						//timer stopped
-						stopTimer();
-						$('#status').val('completed');
-					}
-				}
-			});
+		if($('#start_or_stop_goal_btn').html() == 'Start Goal'){
+			alert('You have to start your Goal first!');
 		}else{
-			console.log($(this).html());
-			$.ajax({
-				url: '/goals/' + goal_id + '/complete',
-				data: goal_complete_form.serialize(),
-				method: 'POST',
-				success: function(response){
-					if(response.message == 'success'){
-						console.log(response.request);
-						alert('Just DO it!');
-						$('#goal_complete_btn').html('Mark as completed');
-						$('#goal_timer').html('00:00:00h');
-						$('#start_or_stop_goal_btn').html('Start Goal');
-						//Timer stopped
-						$('#status').val('uncompleted');
+
+			var goal_complete_form = $('#goal_complete_form');
+			var goal_id = $('#goal_id').val();
+
+			if($(this).html() == 'Mark as completed'){
+				console.log($(this).html());
+				$.ajax({
+					url: '/goals/' + goal_id + '/complete',
+					data: goal_complete_form.serialize(),
+					method: 'POST',
+					success: function(response){
+						if(response.message == 'success'){
+							console.log(response.request);
+							alert('Congratulations!');
+							$('#goal_complete_btn').html('Mark as uncompleted');
+							$('#start_or_stop_goal_btn').html('Start Goal');
+							//timer stopped
+							stopTimer();
+							$('#status').val('completed');
+						}
 					}
-				}
-			});
+				});
+			}else{
+				console.log($(this).html());
+				$.ajax({
+					url: '/goals/' + goal_id + '/complete',
+					data: goal_complete_form.serialize(),
+					method: 'POST',
+					success: function(response){
+						if(response.message == 'success'){
+							console.log(response.request);
+							alert('Just DO it!');
+							$('#goal_complete_btn').html('Mark as completed');
+							$('#goal_timer').html('00:00:00h');
+							$('#start_or_stop_goal_btn').html('Start Goal');
+							//Timer stopped
+							$('#status').val('uncompleted');
+						}
+					}
+				});
+			}
 		}
 	});
+
 })
