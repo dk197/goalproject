@@ -195,10 +195,13 @@ class GoalController extends Controller
 
         if(request()->status == 'completed'){
             $goal->completed = '0';
+            $goal->beginning = null;
             $goal->ending = null;
+            $goal->active = '0';
             $goal->save();
         }else{
             $goal->completed = '1';
+            $goal->active = '0';
             $goal->ending = Carbon::now();
             $goal->save();
         }

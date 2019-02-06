@@ -161,10 +161,17 @@ $(document).ready(function(){
 		});
 	});
 
-	var start_or_stop_goal_form = $('#start_or_stop_goal_form');
 
-	start_or_stop_goal_form.on('submit', function(e){
+	$(document).on('click', '#start_or_stop_goal_btn', function(e){
+
+		e.preventDefault()
+
+		if($('#goal_complete_btn').html() == 'Mark as uncompleted'){
+			alert('Mark Goal as uncompleted first!');
+		}else{
+
 		var goal_id = $('#goal_id').val();
+		var start_or_stop_goal_form = $('#start_or_stop_goal_form');
 
 		if($('#start_or_stop_goal_btn').html() == 'Start Goal'){
 			var url = '/goals/' + goal_id + '/start';
@@ -172,27 +179,26 @@ $(document).ready(function(){
 			var url = '/goals/' + goal_id + '/stop';
 		}
 
-		e.preventDefault()
-
-		$.ajax({
-			url: url,
-			data: start_or_stop_goal_form.serialize(),
-			method: 'POST',
-			success: function(response){
-				if(response.message =='success'){
-					if(url =='/goals/' + goal_id + '/start'){
-						$('#start_or_stop_goal_btn').html('Stop Goal');
-						startTimer();
+			$.ajax({
+				url: url,
+				data: start_or_stop_goal_form.serialize(),
+				method: 'POST',
+				success: function(response){
+					if(response.message =='success'){
+						if(url =='/goals/' + goal_id + '/start'){
+							$('#start_or_stop_goal_btn').html('Stop Goal');
+							startTimer();
+						}else{
+							$('#start_or_stop_goal_btn').html('Start Goal');
+							$('#goal_timer').html('00:00:00h');
+							stopTimer();
+						}
 					}else{
-						$('#start_or_stop_goal_btn').html('Start Goal');
-						$('#goal_timer').html('00:00:00h');
-						stopTimer();
+						alert('An error occured, please try again');
 					}
-				}else{
-					alert('An error occured, please try again');
 				}
-			}
-		});
+			});
+		}
 	});
 
 	$(document).on('click', '#goal_complete_btn', function(e){
@@ -212,6 +218,7 @@ $(document).ready(function(){
 						console.log(response.request);
 						alert('Congratulations!');
 						$('#goal_complete_btn').html('Mark as uncompleted');
+						$('#start_or_stop_goal_btn').html('Start Goal');
 						//timer stopped
 						stopTimer();
 						$('#status').val('completed');
@@ -229,6 +236,8 @@ $(document).ready(function(){
 						console.log(response.request);
 						alert('Just DO it!');
 						$('#goal_complete_btn').html('Mark as completed');
+						$('#goal_timer').html('00:00:00h');
+						$('#start_or_stop_goal_btn').html('Start Goal');
 						//Timer stopped
 						$('#status').val('uncompleted');
 					}
