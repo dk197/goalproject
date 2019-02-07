@@ -14,13 +14,6 @@
 
 		<div class="col-md-4 border-right border-secondary">
 			<h3 class="border-bottom border-secondary" id="active_goals">Active</h3>
-				<!-- @foreach($goals_active as $goal)
-				<div class="test">
-					<a href="goals/{{ $goal['id'] }}" class="goal_item">
-						{{ $goal['title'] }}
-					</a>
-				</div>
-				@endforeach -->
 			<ul id="goal_list_active">
 				@foreach($goals_active as $goal)
 					<li class="goal_item">
@@ -62,7 +55,7 @@
 
 	<div hidden id="hidden_goal_form">
 
-		<form id="create_goal_form" method="POST" action="/goals">
+		<form id="create_goal_form">
 			@csrf
 		  <div class="form-group">
 		    <label for="goal_title">Your Goal</label>

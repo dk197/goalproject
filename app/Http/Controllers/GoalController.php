@@ -121,7 +121,7 @@ class GoalController extends Controller
             ];
         }
 
-        return view('goals.show', compact('goal'), compact('data'));
+        return view('goals.show', compact('goal', 'data'));
     }
 
     /**
