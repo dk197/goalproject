@@ -89,3 +89,8 @@ body{
 .card-header{
 	border-bottom: 1px solid hsla(0,0%,100%,.5);
 }
+
+
+.alert{
+	margin-top: 20px;
+}

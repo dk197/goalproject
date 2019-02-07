@@ -144,7 +144,7 @@ class GoalController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Goal $goal)
+    public function update(Goal $goal, Request $request)
     {
         if(request('public') == ''){
             $goal->public = '0';
@@ -152,9 +152,13 @@ class GoalController extends Controller
             $goal->public = request('public');
         }
 
+        $this->validate($request, [
+            'title' => ['required', 'min:3'], 
+            'description' => ['required', 'min:3']
+        ]);
+
         $goal->title = request('title');
         $goal->description = request('description');
-        
         $goal->save();
 
         return redirect('/goals');

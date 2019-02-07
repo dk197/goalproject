@@ -6,7 +6,7 @@
 	<div class="row">
 		<div class="{{ Auth::user()->id == $goal->user_id ? 'col-md-4' : 'col-md-6' }} border-right border-secondary">
 			<h1>{{ $goal->title }}</h1>
-			<p>Goal created on {{ $data['created_date'] }} at {{ $data['created_time'] }}</p>
+			<p>Goal created on {{ $data['created_date'] }} at {{ $data['created_time'] }}h</p>
 			<p class="goal_font">{{ $goal->description }}</p>
 
 			@if(Auth::user()->id == $goal->user_id)
