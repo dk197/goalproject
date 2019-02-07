@@ -26,16 +26,18 @@ class GoalController extends Controller
     public function index()
     {
         $match_active = ['user_id' => auth()->id(), 'active' => '1'];
-        $match_inactive = ['user_id' => auth()->id(), 'active' => '0'];
+        $match_inactive = ['user_id' => auth()->id(), 'active' => '0', 'completed' => '0'];
+        $match_completed = ['user_id' => auth()->id(), 'completed' => '1'];
 
         $goals_active = Goal::where($match_active)->latest('created_at')->get();
         $goals_inactive = Goal::where($match_inactive)->latest('created_at')->get();
+        $goals_completed = Goal::where($match_completed)->latest('created_at')->get();
         // $goals_array = [
         //     'active' => $goals_active->toArray(),
         //     'inactive' => $goals_inactive->toArray()
         //  ];
          // dd($goals_active);
-        return view('goals.index', compact('goals_inactive'), compact('goals_active'));
+        return view('goals.index', compact('goals_inactive', 'goals_completed', 'goals_active'));
     }
 
     /**
@@ -213,11 +215,13 @@ class GoalController extends Controller
     public function publicGoals(Goal $Goal){
 
         $match_active = ['public' => '1', 'active' => '1'];
-        $match_inactive = ['public' => '1', 'active' => '0'];
+        $match_inactive = ['public' => '1', 'active' => '0', 'completed' => '0'];
+        $match_completed = ['public' => '1', 'active' => '0', 'completed' => '1'];
 
         $goals_active = Goal::where($match_active)->latest('created_at')->get();
         $goals_inactive = Goal::where($match_inactive)->latest('created_at')->get();
+        $goals_completed = Goal::where($match_completed)->latest('created_at')->get();
 
-        return view('goals.publicgoals', compact('goals_inactive'), compact('goals_active'));
+        return view('goals.publicgoals', compact('goals_inactive', 'goals_active', 'goals_completed'));
     }
 }
