@@ -77,15 +77,12 @@
 		    <label class="form-check-label" for="goal_public">Set Goal as public</label>
 		  </div>
 
-		  <!-- <div class="form-group">
-		  	<label class="form-check-label" for="goal_ending">End of the Goal (optional)</label>
-		    <input type="date" name="goal_ending" class="form-control" id="goal_ending">
-		  </div> -->
-
 		  <button type="submit" class="goal_btn margin_top">Create</button>
 		</form>
 
 	</div>
+	@include('errors')
+	<div class="alert alert-danger" style="display:none"></div>
 	@endif
 </div>
 @endsection

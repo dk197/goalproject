@@ -10,13 +10,13 @@
 			<p class="goal_font">{{ $goal->description }}</p>
 
 			@if(Auth::user()->id == $goal->user_id)
-			<button class="goal_btn" onclick="window.location='/goals/{{ $goal->id }}/edit';">Edit</button>
+				<button class="goal_btn" onclick="window.location='/goals/{{ $goal->id }}/edit';">Edit</button>
 
-			<form id="goal_complete_form">
-				@csrf
-				<input type="text" id="status" hidden name="status" value="{{ $goal->completed == 0 ? 'uncompleted' : 'completed' }}">
-				<button class="goal_btn margin_top" id="goal_complete_btn" type="submit">{{ $goal->completed == '0' ? 'Mark as completed' : 'Mark as uncompleted' }}</button>
-			</form>
+				<form id="goal_complete_form">
+					@csrf
+					<input type="text" id="status" hidden name="status" value="{{ $goal->completed == 0 ? 'uncompleted' : 'completed' }}">
+					<button class="goal_btn margin_top" id="goal_complete_btn" type="submit">{{ $goal->completed == '0' ? 'Mark as completed' : 'Mark as uncompleted' }}</button>
+				</form>
 			@endif
 
 		</div>
@@ -46,9 +46,7 @@
 					@else
 						<button class="goal_btn" id="start_or_stop_goal_btn" type="submit">Start Goal</button>
 					@endif
-
 				</form>
-
 			</div>
 
 		</div>

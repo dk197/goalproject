@@ -10,12 +10,13 @@ use Illuminate\Http\Request;
 
 use App\Goal;
 
+use Validator;
+
 class GoalController extends Controller
 {
 
     public function __construct(){
         $this->middleware('auth', ['only' => ['show', 'store', 'edit', 'update', 'destroy', 'start', 'stop', 'complete']]);
-        // ->only([index', ...])
     }
 
     /**
@@ -32,11 +33,7 @@ class GoalController extends Controller
         $goals_active = Goal::where($match_active)->latest('created_at')->get();
         $goals_inactive = Goal::where($match_inactive)->latest('created_at')->get();
         $goals_completed = Goal::where($match_completed)->latest('created_at')->get();
-        // $goals_array = [
-        //     'active' => $goals_active->toArray(),
-        //     'inactive' => $goals_inactive->toArray()
-        //  ];
-         // dd($goals_active);
+
         return view('goals.index', compact('goals_inactive', 'goals_completed', 'goals_active'));
     }
 
@@ -48,27 +45,38 @@ class GoalController extends Controller
      */
     public function store(Request $request)
     {
-        $attributes = request()->validate([
-            'title' => ['required', 'min:3'], 
+        // $attributes = request()->validate([
+        //     'title' => ['required', 'min:3'], 
+        //     'description' => ['required', 'min:3']
+        // ]);
+
+        $validator = Validator::make($request->all(), [
+            'title' => ['required', 'min:3'],
             'description' => ['required', 'min:3']
         ]);
 
-        $attributes['user_id'] = auth()->id();
+        if($validator->fails()){
+            return response()->json(['errors'=>$validator->errors()->all()]);
+        }else{
 
-        $attributes['active'] = $request->active;
-        $attributes['public'] = $request->public;
+            $attributes['title'] = $request->title;
+            $attributes['description'] = $request->description;
+            $attributes['user_id'] = auth()->id();
+            $attributes['active'] = $request->active;
+            $attributes['public'] = $request->public;
 
-        if($attributes['active'] == '1'){
-           $attributes['beginning'] = Carbon::now()->toDateTimeString();
+            if($attributes['active'] == '1'){
+               $attributes['beginning'] = Carbon::now()->toDateTimeString();
+            }
+
+            if(!$request->goal_ending == ''){
+                $attributes['ending'] = $request->goal_ending;
+            }
+
+            $data = Goal::create($attributes);
+
+            return response()->json(['message' => 'success', 'attributes' => $attributes, 'inserted_id' => $data->id, 'active' =>  $request->active]);
         }
-
-        if(!$request->goal_ending == ''){
-            $attributes['ending'] = $request->goal_ending;
-        }
-
-        $data = Goal::create($attributes);
-
-        return response()->json(['message' => 'success', 'attributes' => $attributes, 'inserted_id' => $data->id, 'active' =>  $request->active]);
     }
 
     /**
@@ -211,7 +219,6 @@ class GoalController extends Controller
             $goal->ending = Carbon::now();
             $goal->save();
         }
-
 
         return response()->json(['message' => 'success', 'request' => request()->all()]);
     }

@@ -166,7 +166,10 @@ $(document).ready(function(){
 					$("html, body").animate({ scrollTop: 0 }, "slow");
 					$('#hidden_goal_form').attr('hidden', true);
 				}else{
-					alert('An Error occured, please try again!');
+					jQuery.each(response.errors, function(key, value){
+              			jQuery('.alert-danger').show();
+              			jQuery('.alert-danger').append('<p>'+value+'</p>');
+              		});
 				}
 			}
 		});
