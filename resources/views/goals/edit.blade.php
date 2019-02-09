@@ -4,9 +4,10 @@
 
 <div class="container">
 
-	<form method="POST" action="/goals/{{ $goal->id }}">
+	<form id="goal_edit_form">
 		@csrf
 		@method('PATCH')
+		<input type="text" hidden id="goal_id" value="{{ $goal->id }}" name="goal_id">
 		<div class="form-group">
 			<label for="goal_title">Your Goal</label>
 			<input type="text" name="title" value="{{ $goal->title }}" id="goal_title" class="form-control" placeholder="Enter your Goal">
@@ -23,6 +24,7 @@
 		</div>
 
 		<button type="submit" class="goal_btn margin_top">Update</button>
+
 	</form>
 
 	<form method="POST" action="/goals/{{ $goal->id }}">
@@ -31,7 +33,8 @@
 		<button type="submit" class="goal_btn margin_top">Delete Goal</button>
 	</form>
 
-	@include('errors')
+	<!-- @include('errors') -->
+	<div class="alert alert-danger" style="display:none"></div>
 
 </div>
 

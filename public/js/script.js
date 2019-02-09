@@ -176,6 +176,33 @@ $(document).ready(function(){
 	});
 
 
+	var goal_edit_form = $('#goal_edit_form');
+
+	goal_edit_form.on('submit', function(e){
+
+		e.preventDefault();
+
+		var goal_id = $('#goal_id').val();
+		var data = goal_edit_form.serialize();
+
+		$.ajax({
+			url: '/goals/' + goal_id,
+			type: 'POST',
+			data: data,
+			success: function(response){
+				if(response.message == 'success'){
+					window.location.href = '/goals/' + goal_id;
+				}else{
+					jQuery.each(response.errors, function(key, value){
+              			jQuery('.alert-danger').show();
+              			jQuery('.alert-danger').append('<p>'+value+'</p>');
+              		});
+				}
+			}
+		});
+	});
+
+
 	$(document).on('click', '#start_or_stop_goal_btn', function(e){
 
 		e.preventDefault()

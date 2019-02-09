@@ -14,32 +14,19 @@ Tooltip for active/public
 
 protected fillable in goal.php
 
-aktiv setzen -> Zeit seit aktiv setzen
-
 getCheckboxValue ötig, da serialize() nur aktive checkboxen speichert
 
 app.php app debug auf false setzen
  'env' => env('APP_ENV', 'local'),
 'debug' => env('APP_DEBUG', false
 
-
-page mit public/private 
-
 VALIDATION (Required)
 
 POLICIES (authserviceprovider, goalpolicy)
 
-timer bei nicht eigenen goals
-
-login und register -> Button Klasse
-
 responsive
 
-ending nur in zukunft setzen
-
 AJAX von start/stop (document.onsubmit auf startgoalform)
-
-Ending im create refactor
 
 Validation goal complete: kein complete, wenn nicht active (js bereits vorhanden, controller nicht)
 

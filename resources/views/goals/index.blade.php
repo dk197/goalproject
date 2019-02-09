@@ -81,7 +81,6 @@
 		</form>
 
 	</div>
-	@include('errors')
 	<div class="alert alert-danger" style="display:none"></div>
 	@endif
 </div>

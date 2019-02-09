@@ -154,22 +154,27 @@ class GoalController extends Controller
      */
     public function update(Goal $goal, Request $request)
     {
-        if(request('public') == ''){
-            $goal->public = '0';
-        }else{
-            $goal->public = request('public');
-        }
-
-        $this->validate($request, [
-            'title' => ['required', 'min:3'], 
+        $validator = Validator::make($request->all(), [
+            'title' => ['required', 'min:3'],
             'description' => ['required', 'min:3']
         ]);
 
-        $goal->title = request('title');
-        $goal->description = request('description');
-        $goal->save();
+        if($validator->fails()){
+            return response()->json(['errors'=>$validator->errors()->all()]);
+        }else{
 
-        return redirect('/goals');
+            if(request('public') == ''){
+                $goal->public = '0';
+            }else{
+                $goal->public = request('public');
+            }
+
+            $goal->title = request('title');
+            $goal->description = request('description');
+            $goal->save();
+
+            return response()->json(['message' => 'success']);
+        }
     }
 
     /**
