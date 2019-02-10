@@ -33,3 +33,7 @@ Validation goal complete: kein complete, wenn nicht active (js bereits vorhanden
 Goal->complete: bei showview auch complete date anzeigen
 
 login controller edit (function handle)
+
+REGISTER REDIRECT
+
+Timer nicht eigenes Ziel

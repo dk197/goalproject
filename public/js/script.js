@@ -1,30 +1,7 @@
-// window.addEventListener('load', function(){
-
-// 	var checkboxes = document.getElementsByClassName('checkbox');
-
-// 	var showCreateForm = function(){
-// 		alert('test');
-// 	}
-
-// 	var changeCheckboxValue = function(){
-// 		if(this.checked){
-// 			this.value = 1;
-// 		}else{
-// 			this.value = 0;
-// 		}
-// 	}
-
-// 	document.getElementById('create_goal').addEventListener('click', showCreateForm);
-	
-// 	for (var i = 0; i < checkboxes.length; i++) {
-// 		checkboxes[i].addEventListener('change', changeCheckboxValue);
-// 	}
-// });
-
 $(document).ready(function(){
 
 	var myUrl = window.location.pathname;
-    console.log(myUrl);
+	var interval = null;
     	
    if(myUrl.includes('public')){
     	$('#public_nav').addClass('active');
@@ -34,12 +11,9 @@ $(document).ready(function(){
     	$('#home_nav').addClass('active');
     }
 
-	var interval = null;
 
-	if($('div').is('#show_goal') && $('#start_or_stop_goal_btn').html() == 'Stop Goal' && $('#goal_complete_btn').html() == 'Mark as completed'){
-		startTimer();
-		//NEEDED: if completed -> dont start timer
-		
+	if($('div').is('#show_goal') && (($('#start_or_stop_goal_btn').html() == 'Stop Goal' && $('#goal_complete_btn').html() == 'Mark as completed')) || ($('div').is('#goal_cmpl') && $('div').is('#goal_strt'))){
+		startTimer();		
 	}
 
 	function timer(){
@@ -98,7 +72,6 @@ $(document).ready(function(){
 	}
 
 	
-
 	$('.checkbox').on('change', function(){
 		if(this.checked){
 			this.value = 1;
@@ -148,11 +121,11 @@ $(document).ready(function(){
 		return values;
 	}
 
+
 	var create_goal_form = $('#create_goal_form');
 
 	create_goal_form.on('submit', function(e){
 		var data = create_goal_form.serialize() + getCheckboxValue();
-		console.log(data);
 		e.preventDefault();
 		$.ajax({
 			url: '/goals',
@@ -219,7 +192,6 @@ $(document).ready(function(){
 		}else{
 			var url = '/goals/' + goal_id + '/stop';
 		}
-
 			$.ajax({
 				url: url,
 				data: start_or_stop_goal_form.serialize(),
@@ -254,37 +226,31 @@ $(document).ready(function(){
 			var goal_id = $('#goal_id').val();
 
 			if($(this).html() == 'Mark as completed'){
-				console.log($(this).html());
 				$.ajax({
 					url: '/goals/' + goal_id + '/complete',
 					data: goal_complete_form.serialize(),
 					method: 'POST',
 					success: function(response){
 						if(response.message == 'success'){
-							console.log(response.request);
 							alert('Congratulations!');
 							$('#goal_complete_btn').html('Mark as uncompleted');
 							$('#start_or_stop_goal_btn').html('Start Goal');
-							//timer stopped
 							stopTimer();
 							$('#status').val('completed');
 						}
 					}
 				});
 			}else{
-				console.log($(this).html());
 				$.ajax({
 					url: '/goals/' + goal_id + '/complete',
 					data: goal_complete_form.serialize(),
 					method: 'POST',
 					success: function(response){
 						if(response.message == 'success'){
-							console.log(response.request);
 							alert('Just DO it!');
 							$('#goal_complete_btn').html('Mark as completed');
 							$('#goal_timer').html('00:00:00h');
 							$('#start_or_stop_goal_btn').html('Start Goal');
-							//Timer stopped
 							$('#status').val('uncompleted');
 						}
 					}

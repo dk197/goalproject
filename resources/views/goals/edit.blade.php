@@ -33,7 +33,6 @@
 		<button type="submit" class="goal_btn margin_top">Delete Goal</button>
 	</form>
 
-	<!-- @include('errors') -->
 	<div class="alert alert-danger" style="display:none"></div>
 
 </div>
